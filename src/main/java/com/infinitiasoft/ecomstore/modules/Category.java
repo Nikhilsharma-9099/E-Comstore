@@ -1,22 +1,27 @@
 package com.infinitiasoft.ecomstore.modules;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity(name = "categories")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
-    private Long id;
-    private String name;
 
-    public Long getId() {
-        return id;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long categoryId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @NotBlank
+    @Size(min = 5, max = 30, message = "Category name must be between 5 and 30 characters")
+    private String categoryName;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

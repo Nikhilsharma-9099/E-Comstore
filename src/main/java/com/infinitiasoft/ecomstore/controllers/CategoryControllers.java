@@ -2,6 +2,7 @@ package com.infinitiasoft.ecomstore.controllers;
 
 import com.infinitiasoft.ecomstore.modules.Category;
 import com.infinitiasoft.ecomstore.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -30,7 +31,7 @@ public class CategoryControllers {
     }
 
     @PostMapping("/public/categories")
-    public ResponseEntity<String> createCategory(@RequestBody Category category) {
+    public ResponseEntity<String> createCategory(@Valid @RequestBody Category category) {
         categoryService.createCategory(category);
         return new ResponseEntity<>("Category created successfully", HttpStatus.CREATED);
     }
