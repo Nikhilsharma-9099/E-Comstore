@@ -5,12 +5,9 @@ import com.infinitiasoft.ecomstore.services.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,24 +35,14 @@ public class CategoryControllers {
 
     @DeleteMapping("/admin/categories/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
-        try {
-            String status = categoryService.deleteCategory(id);
-            return ResponseEntity.status(HttpStatus.OK).body(status);
-        }catch(ResponseStatusException e) {
-            return  new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
-
+        String status = categoryService.deleteCategory(id);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
     @PutMapping("/public/categories/{id}")
-    public ResponseEntity<String> updateCategory(@RequestBody Category category, @PathVariable Long id) {
-        try {
-            Category updatedCategory = categoryService.updateCategory(category, id);
-            return new ResponseEntity<>("Category with Id : " + id + " Has been updated!!", HttpStatus.OK);
-        }catch(ResponseStatusException e) {
-            return  new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
-
+    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long id) {
+        Category updatedCategory = categoryService.updateCategory(category, id);
+        return new ResponseEntity<>("Category with Id : " + id + " Has been updated!!", HttpStatus.OK);
     }
 
 }
