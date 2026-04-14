@@ -1,12 +1,12 @@
 package com.infinitiasoft.ecomstore.services;
 
 import com.infinitiasoft.ecomstore.modules.Category;
-
-import java.util.List;
+import com.infinitiasoft.ecomstore.payload.CategoryDTO;
+import com.infinitiasoft.ecomstore.payload.CategoryResponse;
 
 public interface CategoryService {
-    List<Category> getAllCategories();
-    void createCategory(Category category);
+    CategoryResponse getAllCategories();
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
 
     String deleteCategory(Long id);
 
