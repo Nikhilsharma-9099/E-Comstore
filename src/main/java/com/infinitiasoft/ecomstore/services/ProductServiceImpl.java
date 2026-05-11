@@ -57,4 +57,47 @@ public class ProductServiceImpl implements ProductService {
         productResponse.setContent(productDTOList);
         return productResponse;
     }
+
+    @Override
+    public ProductResponse searchByCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+
+        List<Product> products = productRepository.findByCategoryOrderByProductPriceAsc(category);
+        List<ProductDTO> productDTOList = products.stream().map(product -> modelMapper.map(product, ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOList);
+        return productResponse;
+    }
+
+    @Override
+    public ProductResponse searchProductByKeyword(String keyword) {
+
+        List<Product> products = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
+        List<ProductDTO> productDTOList = products.stream().map(product -> modelMapper.map(product, ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOList);
+        return productResponse;
+    }
+
+    @Override
+    public ProductDTO updateProduct(Long productId, Product product) {
+        Product productFromDB = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        productFromDB.setProductName(product.getProductName());
+        productFromDB.setProductDescription(product.getProductDescription());
+        productFromDB.setQuantity(product.getQuantity());
+        productFromDB.setDiscount(product.getDiscount());
+        productFromDB.setProductPrice(product.getProductPrice());
+        productFromDB.setSpecialPrice(product.getSpecialPrice());
+        Product savedProduct = productRepository.save(productFromDB);
+        return modelMapper.map(savedProduct, ProductDTO.class);
+    }
+
+
 }
